@@ -38,6 +38,21 @@ Built-in Types
 
   It's easy to think that function would be a top-level built-in type in JS, However, if you read the spec, you'll see it's actually a "subtype" of object. Specifically, a function is referred to as a "callable object" -- an object that has an internal [[Call]] property that allows it to be invoked.
 
+  The fact that functions are actually objects is quite useful. Most importantly, they can have properties. For example:
+
+function a(b,c) {
+
+}
+The function object has a length property set to the number of formal parameters it is declared with.
+
+a.length; // 2
+Since you declared the function with two formal named parameters (b and c), the "length of the function" is 2.
+
+What about arrays? They're native to JS, so are they a special type?
+
+typeof [1,2,3] === "object"; // true
+Nope, just objects. It's most appropriate to think of them also as a "subtype" of object (see Chapter 3), in this case with the additional characteristics of being numerically indexed (as opposed to just being string-keyed like plain objects) and maintaining an automatically updated .length property.
+
 
 
 
