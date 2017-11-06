@@ -141,18 +141,68 @@ Built-in Types
 
 
 
+Chapter 2: Values
+
+  arrays, strings, and numbers are the most basic building-blocks of any program, but JavaScript has some unique characteristics with these types that may either delight or confound you.
+
+  Let's look at several of the built-in value types in JS, and explore how we can more fully understand and correctly leverage their behaviors.
 
 
+////Arrays
+
+  As compared to other type-enforced languages, JavaScript arrays are just containers for any type of value, from string to number to object to even another array (which is how you get multidimensional arrays).
+
+  // var a = [ 1, "2", [3] ];
+  //
+  // a.length;		// 3
+  // a[0] === 1;		// true
+  // a[2][0] === 3;	// true
+
+  You don't need to presize your arrays (see "Arrays" in Chapter 3), you can just declare them and add values as you see fit:
+
+  // var a = [ ];
+  //
+  // a.length;	// 0
+  //
+  // a[0] = 1;
+  // a[1] = "2";
+  // a[2] = [ 3 ];
+  //
+  // a.length;	// 3
+
+  Warning: Using delete on an array value will remove that slot from the array, but even if you remove the final element, it does not update the length property, so be careful! We'll cover the delete operator itself in more detail in Chapter 5.
+
+  arrays are numerically indexed (as you'd expect), but the tricky thing is that they also are objects that can have string keys/properties added to them (but which don't count toward the length of the array):
+
+  // var a = [ ];
+  //
+  // a["13"] = 42;
+  //
+  // a.length; // 14
 
 
+//Array-Likes
 
+  For example, various DOM query operations return lists of DOM elements that are not true arrays but are array-like enough for our conversion purposes. Another common example is when functions expose the arguments (array-like) object (as of ES6, deprecated) to access the arguments as a list.
 
+  One very common way to make such a conversion is to borrow the slice(..) utility against the value:
 
+  // function foo() {
+  // 	var arr = Array.prototype.slice.call( arguments );
+  // 	arr.push( "bam" );
+  // 	console.log( arr );
+  // }
+  //
+  // foo( "bar", "baz" ); // ["bar","baz","bam"]
 
+  As of ES6, there's also a built-in utility called Array.from(..) that can do the same task:
 
+  ...
+  var arr = Array.from( arguments );
+  ...
+  Note: Array.from(..) has several powerful capabilities, and will be covered in detail in the ES6 & Beyond title of this series.
 
-
-
+////Strings
 
 
 
