@@ -204,14 +204,36 @@ Chapter 2: Values
 
 ////Strings
 
+  It's a very common belief that strings are essentially just arrays of characters. While the implementation under the covers may or may not use arrays, it's important to realize that JavaScript strings are really not the same as arrays of characters. The similarity is mostly just skin-deep.
 
+  JavaScript strings are immutable, while arrays are quite mutable. Moreover, the a[1] character position access form was not always widely valid JavaScript. Older versions of IE did not allow that syntax (but now they do). Instead, the correct approach has been a.charAt(1).
 
+  A further consequence of immutable strings is that none of the string methods that alter its contents can modify in-place, but rather must create and return new strings. By contrast, many of the methods that change array contents actually do modify in-place.
 
+  Also, many of the array methods that could be helpful when dealing with strings are not actually available for them, but we can "borrow" non-mutation array methods against our string:
 
+  // a.join;			// undefined
+  // a.map;			// undefined
+  //
+  // var c = Array.prototype.join.call( a, "-" );
+  // var d = Array.prototype.map.call( a, function(v){
+  // 	return v.toUpperCase() + ".";
+  // } ).join( "" );
+  //
+  // c;				// "f-o-o"
+  // d;				// "F.O.O."
 
+  Another workaround (aka hack) is to convert the string into an array, perform the desired operation, then convert it back to a string.
 
-
-
+  // var c = a
+  // 	// split `a` into an array of characters
+  // 	.split( "" )
+  // 	// reverse the array of characters
+  // 	.reverse()
+  // 	// join the array of characters back to a string
+  // 	.join( "" );
+  // 
+  // c; // "oof"
 
 
 
