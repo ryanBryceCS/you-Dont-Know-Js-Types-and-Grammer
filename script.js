@@ -180,7 +180,6 @@ Chapter 2: Values
   //
   // a.length; // 14
 
-
 //Array-Likes
 
   For example, various DOM query operations return lists of DOM elements that are not true arrays but are array-like enough for our conversion purposes. Another common example is when functions expose the arguments (array-like) object (as of ES6, deprecated) to access the arguments as a list.
@@ -201,6 +200,7 @@ Chapter 2: Values
   var arr = Array.from( arguments );
   ...
   Note: Array.from(..) has several powerful capabilities, and will be covered in detail in the ES6 & Beyond title of this series.
+
 
 ////Strings
 
@@ -232,8 +232,95 @@ Chapter 2: Values
   // 	.reverse()
   // 	// join the array of characters back to a string
   // 	.join( "" );
-  // 
+  // ()
   // c; // "oof"
+
+
+////Numbers
+
+  JavaScript has just one numeric type: number. This type includes both "integer" values and fractional decimal numbers. I say "integer" in quotes because it's long been a criticism of JS that there are not true integers, as there are in other languages. That may change at some point in the future, but for now, we just have numbers for everything.
+
+  So, in JS, an "integer" is just a value that has no fractional decimal value. That is, 42.0 is as much an "integer" as 42.
+
+  Like most modern languages, including practically all scripting languages, the implementation of JavaScript's numbers is based on the "IEEE 754" standard, often called "floating-point." JavaScript specifically uses the "double precision" format (aka "64-bit binary") of the standard.
+
+  //Numeric Syntax
+  By default, most numbers will be outputted as base-10 decimals, with trailing fractional 0s removed. So:
+
+  // var a = 42.300;
+  // var b = 42.0;
+  //
+  // a; // 42.3
+  // b; // 42
+  toFixed(..) method allows you to specify how many fractional decimal places you'd like the value to be represented with:
+  toPrecision(..) is similar, but specifies how many significant digits should be used to represent the value:
+
+  You don't have to use a variable with the value in it to access these methods; you can access these methods directly on number literals. But you have to be careful with the . operator. Since . is a valid numeric character, it will first be interpreted as part of the number literal, if possible, instead of being interpreted as a property accessor.
+
+  // // invalid syntax:
+  // 42.toFixed( 3 );	// SyntaxError
+  //
+  // // these are all valid:
+  // (42).toFixed( 3 );	// "42.000"
+  // 0.42.toFixed( 3 );	// "0.420"
+  // 42..toFixed( 3 );	// "42.000"
+
+  42.toFixed(3) is invalid syntax, because the . is swallowed up as part of the 42. literal (which is valid -- see above!), and so then there's no . property operator present to make the .toFixed access.
+
+  42..toFixed(3) works because the first . is part of the number and the second . is the property operator. But it probably looks strange, and indeed it's very rare to see something like that in actual JavaScript code. In fact, it's pretty uncommon to access methods directly on any of the primitive values. Uncommon doesn't mean bad or wrong.
+
+  numbers can also be specified in exponent form, which is common when representing larger numbers, such as:
+
+  // var onethousand = 1E3;						// means 1 * 10^3
+  // var onemilliononehundredthousand = 1.1E6;	// means 1.1 * 10^6
+  // number literals can also be expressed in other bases, like binary, octal, and hexadecimal.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
