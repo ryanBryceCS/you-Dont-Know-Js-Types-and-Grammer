@@ -275,6 +275,29 @@ Chapter 2: Values
   // var onemilliononehundredthousand = 1.1E6;	// means 1.1 * 10^6
   // number literals can also be expressed in other bases, like binary, octal, and hexadecimal.
 
+  //Small Decimal Values
+
+  //0.1 + 0.2 === 0.3; // false
+
+  Mathematically, we know that statement should be true. Why is it false?
+
+  Simply put, the representations for 0.1 and 0.2 in binary floating-point are not exact, so when they are added, the result is not exactly 0.3. It's really close: 0.30000000000000004, but if your comparison fails, "close" is irrelevant.
+
+///Special Values
+  There are several special values spread across the various types that the alert JS developer needs to be aware of , and use properly.
+
+  //The Non-value Values
+
+  Both undefined and null are often taken to be interchangeable as either "empty"
+  values or "non"
+  values.Other developers prefer to distinguish between them with nuance.For example:
+
+    null is an empty value
+  undefined is a missing value
+  Or:
+
+    undefined hasn 't had a value yet
+  null had a value and doesn 't anymore
 
 
 
@@ -303,6 +326,40 @@ Chapter 2: Values
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 
