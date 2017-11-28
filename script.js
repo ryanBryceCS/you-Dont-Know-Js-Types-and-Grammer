@@ -292,12 +292,12 @@ Chapter 2: Values
   values or "non"
   values.Other developers prefer to distinguish between them with nuance.For example:
 
-    null is an empty value
+  null is an empty value
   undefined is a missing value
   Or:
 
-    undefined hasn 't had a value yet
-  null had a value and doesn 't anymore
+    undefined hasn't had a value yet
+    null had a value and doesn't anymore
 
 
 
@@ -359,7 +359,7 @@ Chapter 2: Values
 
 
 
-  
+
 
 
 
