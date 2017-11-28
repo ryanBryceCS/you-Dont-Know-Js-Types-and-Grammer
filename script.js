@@ -299,9 +299,22 @@ Chapter 2: Values
     undefined hasn't had a value yet
     null had a value and doesn't anymore
 
+  In non - strict mode, it's actually possible (though incredibly ill-advised!) to assign a value to the globally provided undefined identifier:
+  function foo() {
+    undefined = 2; // really bad idea!
+  }
 
+  In both non - strict mode and strict mode, however, you can create a local variable of the name undefined.But again, this is a terrible idea!
 
+    function foo() {
+      "use strict";
+      var undefined = 2;
+      console.log(undefined); // 2
+    }
 
+  foo();
+  foo();
+  Friends don 't let friends override undefined. Ever.
 
 
 
