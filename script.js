@@ -317,20 +317,22 @@ Chapter 2: Values
   Friends don 't let friends override undefined. Ever.
 
 //// void Operator
+
+
   While undefined is a built - in identifier that holds(unless modified--see above!) the built - in undefined value, another way to get this value is the void operator.
   The expression void ___ "voids"
   out any value, so that the result of the expression is always the undefined value.It doesn 't modify the existing value; it just ensures that no value comes back from the operator expression.
-  
+
   var a = 42;
   console.log(void a, a); // undefined 42
-  
+
   By convention(mostly from C - language programming), to represent the undefined value stand - alone by using void, you 'd use void 0 (though clearly even void true or any other void expression does the same thing). There'
   s no practical difference between void 0, void 1, and undefined.
-  
+
   But the void operator can be useful in a few other circumstances,
     if you need to ensure that an expression has no result value(even
     if it has side effects).
-  
+
   For example:
   function doSomething() {
     // note: `APP.ready` is provided by our application
@@ -359,6 +361,75 @@ In general,
 if there 's ever a place where a value exists (from some expression) and you'
 d find it useful
 for the value to be undefined instead, use the void operator.That probably won 't be terribly common in your programs, but in the rare cases you do need it, it can be quite helpful.
+
+
+////Special Numbers
+
+
+  The number type includes several special values.We 'll take a look at each in detail.
+
+  //The Not Number, Number
+  Any mathematic operation you perform without both operands being numbers(or values that can be interpreted as regular numbers in base 10 or base 16) will result in the operation failing to produce a valid number, in which
+  case you will get the NaN value.
+
+  NaN literally stands
+  for "not a number", though this label / description is very poor and misleading, as we 'll see shortly. It would be much more accurate to think of NaN as being "invalid number," "failed number," or even "bad number," than to think of it as "not a number."
+
+For example:
+
+	var a = 2 / "foo"; // NaN
+
+	typeof a === "number"; // true
+	In other words: "the type of not-a-number is 'number'!"Hooray
+
+	for confusing names and semantics.
+	NaN is a kind of "sentinel value" (an otherwise normal value that 's assigned a special meaning) that represents a special kind of error condition within the number set. The error condition is, in essence: "I tried to perform a mathematic operation but failed, so here's the failed number result instead."
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
