@@ -320,12 +320,45 @@ Chapter 2: Values
   While undefined is a built - in identifier that holds(unless modified--see above!) the built - in undefined value, another way to get this value is the void operator.
   The expression void ___ "voids"
   out any value, so that the result of the expression is always the undefined value.It doesn 't modify the existing value; it just ensures that no value comes back from the operator expression.
+  
   var a = 42;
-
   console.log(void a, a); // undefined 42
+  
+  By convention(mostly from C - language programming), to represent the undefined value stand - alone by using void, you 'd use void 0 (though clearly even void true or any other void expression does the same thing). There'
+  s no practical difference between void 0, void 1, and undefined.
+  
+  But the void operator can be useful in a few other circumstances,
+    if you need to ensure that an expression has no result value(even
+    if it has side effects).
+  
+  For example:
+  function doSomething() {
+    // note: `APP.ready` is provided by our application
+    if (!APP.ready) {
+      // try again later
+      return void setTimeout(doSomething, 100);
+    }
 
+    var result;
 
+    // do some other stuff
+    return result;
+  }
 
+  // were we able to do it right away?
+  if (doSomething()) {
+    // handle next tasks right away
+  }
+Here, the setTimeout(..)
+function returns a numeric value(the unique identifier of the timer interval,
+  if you wanted to cancel it), but we want to void that out so that the
+return value of our
+function doesn 't give a false-positive with the if statement.
+
+In general,
+if there 's ever a place where a value exists (from some expression) and you'
+d find it useful
+for the value to be undefined instead, use the void operator.That probably won 't be terribly common in your programs, but in the rare cases you do need it, it can be quite helpful.
 
 
 
