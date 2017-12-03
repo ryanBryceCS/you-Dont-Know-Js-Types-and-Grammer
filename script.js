@@ -476,7 +476,67 @@ Chapter 2: Values
 
   But what about any positive finite number divided by Infinity? That's easy! 0. And what about a negative finite number divided by Infinity? Keep reading!
 
+//// Zeros
 
+  While it may confuse the mathematics-minded reader, JavaScript has both a normal zero 0 (otherwise known as a positive zero +0) and a negative zero -0. Before we explain why the -0 exists, we should examine how JS handles it, because it can be quite confusing.
+
+  Besides being specified literally as -0, negative zero also results from certain mathematic operations. For example:
+
+  var a = 0 / -3; // -0
+  var b = 0 * -3; // -0
+  Addition and subtraction cannot result in a negative zero.
+
+  A negative zero when examined in the developer console will usually reveal -0, though that was not the common case until fairly recently, so some older browsers you encounter may still report it as 0.
+
+  However, if you try to stringify a negative zero value, it will always be reported as "0", according to the spec.
+
+  var a = 0 / -3;
+
+  // (some browser) consoles at least get it right
+  a;							// -0
+
+  // but the spec insists on lying to you!
+  a.toString();				// "0"
+  a + "";						// "0"
+  String( a );				// "0"
+
+  // strangely, even JSON gets in on the deception
+  JSON.stringify( a );		// "0"
+  Interestingly, the reverse operations (going from string to number) don't lie:
+
+  +"-0";				// -0
+  Number( "-0" );		// -0
+  JSON.parse( "-0" );	// -0
+  Warning: The JSON.stringify( -0 ) behavior of "0" is particularly strange when you observe that it's inconsistent with the reverse: JSON.parse( "-0" ) reports -0 as you'd correctly expect.
+
+  In addition to stringification of negative zero being deceptive to hide its true value, the comparison operators are also (intentionally) configured to lie.
+
+  var a = 0;
+  var b = 0 / -3;
+
+  a == b;		// true
+  -0 == 0;	// true
+
+  a === b;	// true
+  -0 === 0;	// true
+
+  0 > -0;		// false
+  a > b;		// false
+  Clearly, if you want to distinguish a -0 from a 0 in your code, you can't just rely on what the developer console outputs, so you're going to have to be a bit more clever:
+
+  function isNegZero(n) {
+    n = Number( n );
+    return (n === 0) && (1 / n === -Infinity);
+  }
+
+  isNegZero( -0 );		// true
+  isNegZero( 0 / -3 );	// true
+  isNegZero( 0 );			// false
+  Now, why do we need a negative zero, besides academic trivia?
+
+  There are certain applications where developers use the magnitude of a value to represent one piece of information (like speed of movement per animation frame) and the sign of that number to represent another piece of information (like the direction of that movement).
+
+  In those applications, as one example, if a variable arrives at zero and it loses its sign, then you would lose the information of what direction it was moving in before it arrived at zero. Preserving the sign of the zero prevents potentially unwanted information loss.
 
 
 
