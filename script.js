@@ -385,15 +385,67 @@ For example:
 	for confusing names and semantics.
 	NaN is a kind of "sentinel value" (an otherwise normal value that 's assigned a special meaning) that represents a special kind of error condition within the number set. The error condition is, in essence: "I tried to perform a mathematic operation but failed, so here's the failed number result instead."
 
-	
+  So, if you have a value in some variable and want to test to see if it's this special failed-number NaN, you might think you could directly compare to NaN itself, as you can with any other value, like null or undefined. Nope.
 
+  var a = 2 / "foo";
 
+  a == NaN;	// false
+  a === NaN;	// false
+	NaN is a very special value in that it's never equal to another NaN value (i.e., it's never equal to itself). It's the only value, in fact, that is not reflexive (without the Identity characteristic x === x). So, NaN !== NaN. A bit strange, huh?
 
+  So how do we test for it, if we can't compare to NaN (since that comparison would always fail)?
 
+  var a = 2 / "foo";
 
+  isNaN( a ); // true
 
+  Easy enough, right? We use the built-in global utility called isNaN(..) and it tells us if the value is NaN or not. Problem solved!
 
+  Not so fast.
 
+  The isNaN(..) utility has a fatal flaw. It appears it tried to take the meaning of NaN ("Not a Number") too literally -- that its job is basically: "test if the thing passed in is either not a number or is a number." But that's not quite accurate.
+
+  var a = 2 / "foo";
+  var b = "foo";
+
+  a; // NaN
+  b; // "foo"
+
+  window.isNaN( a ); // true
+  window.isNaN( b ); // true -- ouch!
+
+  Clearly, "foo" is literally not a number, but it's definitely not the NaN value either! This bug has been in JS since the very beginning (over 19 years of ouch).
+
+  As of ES6, finally a replacement utility has been provided: Number.isNaN(..). A simple polyfill for it so that you can safely check NaN values now even in pre-ES6 browsers is:
+
+  if (!Number.isNaN) {
+	Number.isNaN = function(n) {
+		return (
+			typeof n === "number" &&
+			window.isNaN( n )
+		);
+	};
+}
+
+var a = 2 / "foo";
+var b = "foo";
+
+Number.isNaN( a ); // true
+Number.isNaN( b ); // false -- phew!
+Actually, we can implement a Number.isNaN(..) polyfill even easier, by taking advantage of that peculiar fact that NaN isn't equal to itself. NaN is the only value in the whole language where that's true; every other value is always equal to itself.
+
+So:
+
+if (!Number.isNaN) {
+	Number.isNaN = function(n) {
+		return n !== n;
+	};
+}
+Weird, huh? But it works!
+
+NaNs are probably a reality in a lot of real-world JS programs, either on purpose or by accident. It's a really good idea to use a reliable test, like Number.isNaN(..) as provided (or polyfilled), to recognize them properly.
+
+If you're currently using just isNaN(..) in a program, the sad reality is your program has a bug, even if you haven't been bitten by it yet!
 
 
 
