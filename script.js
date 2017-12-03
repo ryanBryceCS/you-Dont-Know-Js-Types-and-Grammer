@@ -351,16 +351,16 @@ Chapter 2: Values
   if (doSomething()) {
     // handle next tasks right away
   }
-Here, the setTimeout(..)
-function returns a numeric value(the unique identifier of the timer interval,
-  if you wanted to cancel it), but we want to void that out so that the
-return value of our
-function doesn 't give a false-positive with the if statement.
+  Here, the setTimeout(..)
+  function returns a numeric value(the unique identifier of the timer interval,
+    if you wanted to cancel it), but we want to void that out so that the
+  return value of our
+  function doesn 't give a false-positive with the if statement.
 
-In general,
-if there 's ever a place where a value exists (from some expression) and you'
-d find it useful
-for the value to be undefined instead, use the void operator.That probably won 't be terribly common in your programs, but in the rare cases you do need it, it can be quite helpful.
+  In general,
+  if there 's ever a place where a value exists (from some expression) and you'
+  d find it useful
+  for the value to be undefined instead, use the void operator.That probably won 't be terribly common in your programs, but in the rare cases you do need it, it can be quite helpful.
 
 
 ////Special Numbers
@@ -375,7 +375,7 @@ for the value to be undefined instead, use the void operator.That probably won '
   NaN literally stands
   for "not a number", though this label / description is very poor and misleading, as we 'll see shortly. It would be much more accurate to think of NaN as being "invalid number," "failed number," or even "bad number," than to think of it as "not a number."
 
-For example:
+  For example:
 
 	var a = 2 / "foo"; // NaN
 
@@ -419,33 +419,358 @@ For example:
   As of ES6, finally a replacement utility has been provided: Number.isNaN(..). A simple polyfill for it so that you can safely check NaN values now even in pre-ES6 browsers is:
 
   if (!Number.isNaN) {
-	Number.isNaN = function(n) {
-		return (
-			typeof n === "number" &&
-			window.isNaN( n )
-		);
-	};
-}
+    Number.isNaN = function(n) {
+      return (
+        typeof n === "number" &&
+        window.isNaN( n )
+      );
+    };
+  }
 
-var a = 2 / "foo";
-var b = "foo";
+  var a = 2 / "foo";
+  var b = "foo";
 
-Number.isNaN( a ); // true
-Number.isNaN( b ); // false -- phew!
-Actually, we can implement a Number.isNaN(..) polyfill even easier, by taking advantage of that peculiar fact that NaN isn't equal to itself. NaN is the only value in the whole language where that's true; every other value is always equal to itself.
+  Number.isNaN( a ); // true
+  Number.isNaN( b ); // false -- phew!
+  Actually, we can implement a Number.isNaN(..) polyfill even easier, by taking advantage of that peculiar fact that NaN isn't equal to itself. NaN is the only value in the whole language where that's true; every other value is always equal to itself.
 
-So:
+  So:
 
-if (!Number.isNaN) {
-	Number.isNaN = function(n) {
-		return n !== n;
-	};
-}
-Weird, huh? But it works!
+  if (!Number.isNaN) {
+    Number.isNaN = function(n) {
+      return n !== n;
+    };
+  }
+  Weird, huh? But it works!
 
-NaNs are probably a reality in a lot of real-world JS programs, either on purpose or by accident. It's a really good idea to use a reliable test, like Number.isNaN(..) as provided (or polyfilled), to recognize them properly.
+  NaNs are probably a reality in a lot of real-world JS programs, either on purpose or by accident. It's a really good idea to use a reliable test, like Number.isNaN(..) as provided (or polyfilled), to recognize them properly.
 
-If you're currently using just isNaN(..) in a program, the sad reality is your program has a bug, even if you haven't been bitten by it yet!
+  If you're currently using just isNaN(..) in a program, the sad reality is your program has a bug, even if you haven't been bitten by it yet!
+
+////Infinities
+
+  Developers from traditional compiled languages like C are probably used to seeing either a compiler error or runtime exception, like "Divide by zero," for an operation like:
+
+  var a = 1 / 0;
+  However, in JS, this operation is well-defined and results in the value Infinity (aka Number.POSITIVE_INFINITY). Unsurprisingly:
+
+  var a = 1 / 0;	// Infinity
+  var b = -1 / 0;	// -Infinity
+  As you can see, -Infinity (aka Number.NEGATIVE_INFINITY) results from a divide-by-zero where either (but not both!) of the divide operands is negative.
+
+  JS uses finite numeric representations (IEEE 754 floating-point, which we covered earlier), so contrary to pure mathematics, it seems it is possible to overflow even with an operation like addition or subtraction, in which case you'd get Infinity or -Infinity.
+
+  For example:
+
+  var a = Number.MAX_VALUE;	// 1.7976931348623157e+308
+  a + a;						// Infinity
+  a + Math.pow( 2, 970 );		// Infinity
+  a + Math.pow( 2, 969 );		// 1.7976931348623157e+308
+  According to the specification, if an operation like addition results in a value that's too big to represent, the IEEE 754 "round-to-nearest" mode specifies what the result should be. So, in a crude sense, Number.MAX_VALUE + Math.pow( 2, 969 ) is closer to Number.MAX_VALUE than to Infinity, so it "rounds down," whereas Number.MAX_VALUE + Math.pow( 2, 970 ) is closer to Infinity so it "rounds up".
+
+  If you think too much about that, it's going to make your head hurt. So don't. Seriously, stop!
+
+  Once you overflow to either one of the infinities, however, there's no going back. In other words, in an almost poetic sense, you can go from finite to infinite but not from infinite back to finite.
+
+  It's almost philosophical to ask: "What is infinity divided by infinity". Our naive brains would likely say "1" or maybe "infinity." Turns out neither is true. Both mathematically and in JavaScript, Infinity / Infinity is not a defined operation. In JS, this results in NaN.
+
+  But what about any positive finite number divided by Infinity? That's easy! 0. And what about a negative finite number divided by Infinity? Keep reading!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
